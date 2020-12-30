@@ -1,8 +1,9 @@
 #!/bin/bash
 sudo yum update -y
-curl -LO url -LO https://github.com/prometheus/prometheus/releases/download/v2.22.0/prometheus-2.22.0.linux-amd64.tar.gz
-tar -xvf prometheus-2.22.0.linux-amd64.tar.gz
-mv prometheus-2.22.0.linux-amd64 prometheus-files
+prometheusVersion=2.22.0
+curl -LO url -LO https://github.com/prometheus/prometheus/releases/download/v$prometheusVersion/prometheus-$prometheusVersion.linux-amd64.tar.gz
+tar -xvf prometheus-$prometheusVersion.linux-amd64.tar.gz
+mv prometheus-$prometheusVersion.linux-amd64 prometheus-files
 sudo useradd --no-create-home --shell /bin/false prometheus
 sudo mkdir /etc/prometheus
 sudo mkdir /var/lib/prometheus
