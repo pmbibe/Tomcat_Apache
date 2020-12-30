@@ -1,0 +1,33 @@
+[Unit]
+Description=MySql Prometheus Exporter
+After=network.target
+
+[Service]
+Type=simple
+User=mysqld_exporter
+Group=mysqld_exporter
+ExecStart=/usr/local/bin/mysqld_exporter \
+--collect.global_status \
+--collect.info_schema.innodb_metrics \
+--collect.auto_increment.columns \
+--collect.info_schema.processlist \
+--collect.binlog_size \
+--collect.info_schema.tablestats \
+--collect.global_variables \
+--collect.info_schema.query_response_time \
+--collect.info_schema.userstats \
+--collect.info_schema.tables \
+--collect.perf_schema.tablelocks \
+--collect.perf_schema.file_events \
+--collect.perf_schema.eventswaits \
+--collect.perf_schema.indexiowaits \
+--collect.perf_schema.tableiowaits \
+--collect.slave_status \
+--config.my-cnf /etc/my.cnf \
+--web.listen-address=0.0.0.0:9104
+
+SyslogIdentifier=mysql_prometheus_exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
