@@ -1,0 +1,72 @@
+- name: installTomcat
+  host: all
+  task:
+  # - name: "Create a dedicated user for Apache Tomcat"
+  #   group:
+  #     name: tomcat
+  - name: "Create Tomcat directory"
+    file:
+      path: /opt/tomcat
+      state: directory
+  - name: "Create user"
+    user:
+      name: tomcat
+      shell: /bin/nologin
+      home: /opt/tomcat
+  # - name: "Download and install the latest Apache Tomcat"
+  #   get_url:
+  #     url: http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.61/bin/apache-tomcat-8.5.61.tar.gz
+  #     dest: /opt/tomcat
+  - name: "Extract file"
+    unarchive: 
+      src: http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.61/bin/apache-tomcat-8.5.61.tar.gz
+      dest: /opt/tomcat
+      remote_src: yes
+  - name: "Change config's permission Tomcat recurse"
+    file:
+      path: /opt/tomcat/conf
+      group: tomcat
+      recurse: yes
+      mode: g+r
+      state: directory
+  - name: "Change config's permission Tomcat"
+    file:
+      path: /opt/tomcat/conf
+      mode: g+rwx
+      state: directory
+  - name: "Change owner some directories"
+    file:
+      user: tomcat
+      state: directory
+      path: /opt/tomcat/{{ directories }}
+    vars:
+      directories: 
+      - logs
+      - temp
+      - webapps
+      - work
+  - name: "Change group some directories"
+    file:
+      group: tomcat
+      state: directory
+      recurse: yes
+      path: /opt/tomcat/{{ directories }}
+    var:
+      directories:
+      - bin
+      - lib
+  - name: "Change group bin's permission directory"
+    file:
+      state: directory
+      mode: g+rwx
+      path: /opt/tomcat/bin
+  - name: "Change group bin's permission directory with recurse"
+    file: 
+      state: directory
+      mode: g+r
+      path: /opt/tomcat/bin
+  - name: "Setup a Systemd unit file for Apache Tomcat"
+    
+
+
+

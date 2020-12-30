@@ -1,0 +1,16 @@
+- name: installJava8
+  host: all
+  task:
+  - name: "Update all package"
+    yum: 
+      name: '*'
+      state: latest
+  - name: "Install Java8"
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+  - name: "Config"
+    shell: " regex=$(echo -ne '\n' | update-alternatives --config java | grep 1.8.0 | awk '{print $4}') && \
+             javaHome=$(echo "$regex" | sed -e 's/(//g' -e 's/)//g') && \
+             echo "export JAVA_HOME=$javaHome" >> .bash_profile && \
+             source .bash_profile "
